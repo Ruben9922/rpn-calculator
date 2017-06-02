@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class Evaluator {
-    public static int evaluate(String rpnInput) throws EvaluateException {
+    public static int evaluate(String rpnExpression) throws EvaluateException {
         Map<String, Operator> operators = new HashMap<>(4);
         operators.put("+", new Operator((x, y) -> x + y));
         operators.put("*", new Operator((x, y) -> x * y));
@@ -16,7 +16,7 @@ public class Evaluator {
         Deque<Integer> stack = new LinkedList<>();
 
         // Split string, using one or more consecutive spaces, into lexemes
-        String[] lexemes = rpnInput.split("\\s+");
+        String[] lexemes = rpnExpression.split("\\s+");
 
         for (String lexeme : lexemes) {
             Operator operator = operators.get(lexeme);
