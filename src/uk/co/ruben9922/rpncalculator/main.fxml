@@ -25,7 +25,8 @@
         <buttons>
             <Button ButtonBar.buttonData="APPLY" defaultButton="true" mnemonicParsing="false"
                     onAction="#evaluateButtonAction" text="Evaluate"/>
-            <Button ButtonBar.buttonData="CANCEL_CLOSE" cancelButton="true" mnemonicParsing="false" text="Clear"/>
+            <Button ButtonBar.buttonData="CANCEL_CLOSE" cancelButton="true" mnemonicParsing="false"
+                    onAction="#clearButtonAction" text="Clear"/>
         </buttons>
     </ButtonBar>
     <padding>

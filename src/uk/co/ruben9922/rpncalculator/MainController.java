@@ -32,4 +32,10 @@ public class MainController {
             messageLabel.setText("Error: " + e.getMessage());
         }
     }
+
+    public void clearButtonAction(ActionEvent actionEvent) {
+        rpnExpressionTextField.setText("");
+        resultTextField.setText("");
+        messageLabel.setText("");
+    }
 }
