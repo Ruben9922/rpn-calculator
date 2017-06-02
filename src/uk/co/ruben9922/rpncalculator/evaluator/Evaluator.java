@@ -18,9 +18,6 @@ public class Evaluator {
         // Split string, using one or more consecutive spaces, into lexemes
         String[] lexemes = rpnInput.split("\\s+");
 
-        // Create patterns
-//        Pattern additionPattern = Pattern.compile("\\+");
-
         for (String lexeme : lexemes) {
             Operator operator = operators.get(lexeme);
             if (operator == null) {
