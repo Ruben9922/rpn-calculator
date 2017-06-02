@@ -1,4 +1,4 @@
-package uk.co.ruben9922.rpncalculator;
+package uk.co.ruben9922.rpncalculator.ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
