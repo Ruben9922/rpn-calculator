@@ -24,10 +24,8 @@
     <ButtonBar GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
         <buttons>
             <Button ButtonBar.buttonData="APPLY" defaultButton="true" mnemonicParsing="false"
-                    onAction="#evaluateButtonAction"
-                    text="Evaluate" fx:id="evaluateButton"/>
-            <Button ButtonBar.buttonData="CANCEL_CLOSE" cancelButton="true" mnemonicParsing="false" text="Clear"
-                    fx:id="clearButton"/>
+                    onAction="#evaluateButtonAction" text="Evaluate"/>
+            <Button ButtonBar.buttonData="CANCEL_CLOSE" cancelButton="true" mnemonicParsing="false" text="Clear"/>
         </buttons>
     </ButtonBar>
     <padding>
