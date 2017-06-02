@@ -48,7 +48,7 @@ public class Evaluator {
         Integer operand;
         if (stack.size() > 1) {
             throw new EvaluateException("Too many operands");
-        } else if (stack.size() == 0) {
+        } else if (stack.size() == 0) { // TODO: Fix errors when only whitespace entered
             return 0;
         } else if (stack.size() == 1 && (operand = stack.pollFirst()) != null) {
             return operand;
