@@ -7,13 +7,15 @@ import java.util.Map;
 
 public class Evaluator {
     public static int evaluate(String rpnExpression) throws EvaluateException {
+        // Create operators
         Map<String, Operator> operators = new HashMap<>(4);
         operators.put("+", new Operator((x, y) -> x + y));
         operators.put("*", new Operator((x, y) -> x * y));
         operators.put("-", new Operator((x, y) -> x - y));
         operators.put("/", new Operator((x, y) -> (int) Math.round((double) x / y)));
 
-        Deque<Integer> stack = new LinkedList<>();
+        // Create stack of trees
+        Deque<Node> stack = new LinkedList<>();
 
         // Split string, using one or more consecutive spaces, into lexemes
         String[] lexemes = rpnExpression.split("\\s+");
@@ -21,39 +23,37 @@ public class Evaluator {
         for (String lexeme : lexemes) {
             Operator operator = operators.get(lexeme);
             if (operator == null) {
-                // Lexeme is not an operator
-                // Check if lexeme is integer operand; if not then throw exception
+                // Lexeme is not an operator, so it should be an integer operand
+                // Try to parse as integer, create new node wrapping this integer, then push to stack
                 try {
                     int operand = Integer.parseInt(lexeme);
-                    stack.offerFirst(operand);
+                    OperandNode operandNode = new OperandNode(operand);
+                    stack.offerFirst(operandNode);
                 } catch (NumberFormatException e) {
                     throw new EvaluateException("Unrecognised token");
                 }
             } else {
                 // Lexeme is an operator
-                // Pop two operands from stack; if stack empty (either operand is null) then throw exception
-                Integer operand1;
-                Integer operand2;
-                if ((operand2 = stack.pollFirst()) == null || (operand1 = stack.pollFirst()) == null) {
+                // Pop two nodes from stack; if stack empty (either operand is null) then throw exception
+                Node leftNode;
+                Node rightNode;
+                if ((rightNode = stack.pollFirst()) == null || (leftNode = stack.pollFirst()) == null) {
                     throw new EvaluateException("Missing operands");
                 }
 
-                // Apply operator to non-null operands and push result to stack
-                int result = operator.apply(operand1, operand2);
-                stack.offerFirst(result);
+                // Create new node for operator with popped operand nodes as children and push to stack
+                OperatorNode operatorNode = new OperatorNode(operator, leftNode, rightNode);
+                stack.offerFirst(operatorNode);
             }
         }
 
-        // Check there is exactly one (non-null) operand on stack
-        Integer operand;
-        if (stack.size() > 1) {
-            throw new EvaluateException("Too many operands");
-        } else if (stack.size() == 0) { // TODO: Fix errors when only whitespace entered
+        // Ensure there is exactly one tree on stack; if so evaluate it
+        if (stack.size() == 0) { // TODO: Fix errors when only whitespace entered
             return 0;
-        } else if (stack.size() == 1 && (operand = stack.pollFirst()) != null) {
-            return operand;
+        } else if (stack.size() == 1) {
+            return stack.pollFirst().evaluate();
         } else {
-            throw new EvaluateException("Unknown error");
+            throw new EvaluateException("Too many operands");
         }
     }
 }
