@@ -10,7 +10,7 @@ import java.util.function.IntBinaryOperator;
 
 public class Evaluator {
     @NotNull
-    public static Node parse(String rpnExpression) throws EvaluateException {
+    public static Node parse(String rpnExpression) throws ParseException {
         // Create operators
         Map<String, IntBinaryOperator> operators = new HashMap<>(4);
         operators.put("+", (x, y) -> x + y);
@@ -34,7 +34,7 @@ public class Evaluator {
                     OperandNode operandNode = new OperandNode(operand);
                     stack.offerFirst(operandNode);
                 } catch (NumberFormatException e) {
-                    throw new EvaluateException("Unrecognised token");
+                    throw new ParseException("Unrecognised token");
                 }
             } else {
                 // Lexeme is an operator
@@ -42,7 +42,7 @@ public class Evaluator {
                 Node leftNode;
                 Node rightNode;
                 if ((rightNode = stack.pollFirst()) == null || (leftNode = stack.pollFirst()) == null) {
-                    throw new EvaluateException("Missing operands");
+                    throw new ParseException("Missing operands");
                 }
 
                 // Create new node for operator with popped operand nodes as children and push to stack
@@ -57,7 +57,7 @@ public class Evaluator {
         } else if (stack.size() == 1) {
             return stack.pollFirst();
         } else {
-            throw new EvaluateException("Too many operands");
+            throw new ParseException("Too many operands");
         }
     }
 }
