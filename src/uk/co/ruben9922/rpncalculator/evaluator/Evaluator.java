@@ -1,5 +1,7 @@
 package uk.co.ruben9922.rpncalculator.evaluator;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -7,7 +9,8 @@ import java.util.Map;
 import java.util.function.IntBinaryOperator;
 
 public class Evaluator {
-    public static int evaluate(String rpnExpression) throws EvaluateException {
+    @NotNull
+    public static Node parse(String rpnExpression) throws EvaluateException {
         // Create operators
         Map<String, IntBinaryOperator> operators = new HashMap<>(4);
         operators.put("+", (x, y) -> x + y);
@@ -50,9 +53,9 @@ public class Evaluator {
 
         // Ensure there is exactly one tree on stack; if so evaluate it
         if (stack.size() == 0) { // TODO: Fix errors when only whitespace entered
-            return 0;
+            return new OperandNode(0);
         } else if (stack.size() == 1) {
-            return stack.pollFirst().evaluate();
+            return stack.pollFirst();
         } else {
             throw new EvaluateException("Too many operands");
         }

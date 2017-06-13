@@ -19,7 +19,7 @@ public class MainController {
         String rpnExpression = rpnExpressionTextField.getText();
         try {
             // Evaluate RPN expression and display result in result text field
-            int result = Evaluator.evaluate(rpnExpression);
+            int result = Evaluator.parse(rpnExpression).evaluate();
             resultTextField.setText(Integer.toString(result));
 
             // Display success message in message label
