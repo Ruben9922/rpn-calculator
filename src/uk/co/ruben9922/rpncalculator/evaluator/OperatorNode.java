@@ -4,16 +4,16 @@ import java.util.function.IntBinaryOperator;
 
 public class OperatorNode implements Node {
     private IntBinaryOperator operator;
-    private Node left;
-    private Node right;
+    private Node leftOperand;
+    private Node rightOperand;
 
-    public OperatorNode(IntBinaryOperator operator, Node left, Node right) {
+    public OperatorNode(IntBinaryOperator operator, Node leftOperand, Node rightOperand) {
         this.operator = operator;
-        this.left = left;
-        this.right = right;
+        this.leftOperand = leftOperand;
+        this.rightOperand = rightOperand;
     }
 
     public int evaluate() {
-        return operator.applyAsInt(left.evaluate(), right.evaluate());
+        return operator.applyAsInt(leftOperand.evaluate(), rightOperand.evaluate());
     }
 }
