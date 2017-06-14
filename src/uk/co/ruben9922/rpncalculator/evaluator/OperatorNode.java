@@ -19,7 +19,7 @@ public class OperatorNode implements Node {
         return String.format("(%s %s %s)", leftOperand.toInfixString(), operator.getOperatorString(), rightOperand.toInfixString());
     }
 
-    public String toPrefixString() {
+    public String toPrefixString() { // TODO: Fix this
         return String.format("%s %s %s", operator.getOperatorString(), leftOperand.toPrefixString(), rightOperand.toPrefixString());
     }
 }
