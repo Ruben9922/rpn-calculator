@@ -1,59 +1,63 @@
 package uk.co.ruben9922.rpncalculator.evaluator;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.function.IntBinaryOperator;
 
 public class Evaluator {
-    public static int evaluate(String rpnExpression) throws EvaluateException {
-        Map<String, Operator> operators = new HashMap<>(4);
-        operators.put("+", new Operator((x, y) -> x + y));
-        operators.put("*", new Operator((x, y) -> x * y));
-        operators.put("-", new Operator((x, y) -> x - y));
-        operators.put("/", new Operator((x, y) -> (int) Math.round((double) x / y)));
+    @NotNull
+    public static Node parse(String rpnExpression) throws ParseException {
+        // Create operators
+        Map<String, IntBinaryOperator> operators = new HashMap<>(4);
+        operators.put("+", (x, y) -> x + y);
+        operators.put("*", (x, y) -> x * y);
+        operators.put("-", (x, y) -> x - y);
+        operators.put("/", (x, y) -> (int) Math.round((double) x / y));
 
-        Deque<Integer> stack = new LinkedList<>();
+        // Create stack of trees
+        Deque<Node> stack = new LinkedList<>();
 
         // Split string, using one or more consecutive spaces, into lexemes
         String[] lexemes = rpnExpression.split("\\s+");
 
         for (String lexeme : lexemes) {
-            Operator operator = operators.get(lexeme);
+            IntBinaryOperator operator = operators.get(lexeme);
             if (operator == null) {
-                // Lexeme is not an operator
-                // Check if lexeme is integer operand; if not then throw exception
+                // Lexeme is not an operator, so it should be an integer operand
+                // Try to parse as integer, create new node wrapping this integer, then push to stack
                 try {
                     int operand = Integer.parseInt(lexeme);
-                    stack.offerFirst(operand);
+                    OperandNode operandNode = new OperandNode(operand);
+                    stack.offerFirst(operandNode);
                 } catch (NumberFormatException e) {
-                    throw new EvaluateException("Unrecognised token");
+                    throw new ParseException("Unrecognised token");
                 }
             } else {
                 // Lexeme is an operator
-                // Pop two operands from stack; if stack empty (either operand is null) then throw exception
-                Integer operand1;
-                Integer operand2;
-                if ((operand2 = stack.pollFirst()) == null || (operand1 = stack.pollFirst()) == null) {
-                    throw new EvaluateException("Missing operands");
+                // Pop two nodes from stack; if stack empty (either operand is null) then throw exception
+                Node leftNode;
+                Node rightNode;
+                if ((rightNode = stack.pollFirst()) == null || (leftNode = stack.pollFirst()) == null) {
+                    throw new ParseException("Missing operands");
                 }
 
-                // Apply operator to non-null operands and push result to stack
-                int result = operator.apply(operand1, operand2);
-                stack.offerFirst(result);
+                // Create new node for operator with popped operand nodes as children and push to stack
+                OperatorNode operatorNode = new OperatorNode(operator, leftNode, rightNode);
+                stack.offerFirst(operatorNode);
             }
         }
 
-        // Check there is exactly one (non-null) operand on stack
-        Integer operand;
-        if (stack.size() > 1) {
-            throw new EvaluateException("Too many operands");
-        } else if (stack.size() == 0) { // TODO: Fix errors when only whitespace entered
-            return 0;
-        } else if (stack.size() == 1 && (operand = stack.pollFirst()) != null) {
-            return operand;
+        // Ensure there is exactly one tree on stack; if so evaluate it
+        if (stack.size() == 0) { // TODO: Fix errors when only whitespace entered
+            return new OperandNode(0);
+        } else if (stack.size() == 1) {
+            return stack.pollFirst();
         } else {
-            throw new EvaluateException("Unknown error");
+            throw new ParseException("Too many operands");
         }
     }
 }

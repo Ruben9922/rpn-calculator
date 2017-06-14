@@ -4,8 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import uk.co.ruben9922.rpncalculator.evaluator.EvaluateException;
 import uk.co.ruben9922.rpncalculator.evaluator.Evaluator;
+import uk.co.ruben9922.rpncalculator.evaluator.ParseException;
 
 public class MainController {
     @FXML
@@ -19,12 +19,12 @@ public class MainController {
         String rpnExpression = rpnExpressionTextField.getText();
         try {
             // Evaluate RPN expression and display result in result text field
-            int result = Evaluator.evaluate(rpnExpression);
+            int result = Evaluator.parse(rpnExpression).evaluate();
             resultTextField.setText(Integer.toString(result));
 
             // Display success message in message label
             messageLabel.setText("Evaluated successfully");
-        } catch (EvaluateException e) {
+        } catch (ParseException e) {
             // Clear text of result text field
             resultTextField.setText("");
 
