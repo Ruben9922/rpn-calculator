@@ -15,7 +15,7 @@ public class MainController {
     @FXML
     private Label messageLabel;
 
-    public void evaluateButtonAction(ActionEvent actionEvent) {
+    public void evaluateButtonAction() {
         String rpnExpression = rpnExpressionTextField.getText();
         try {
             // Evaluate RPN expression and display result in result text field
