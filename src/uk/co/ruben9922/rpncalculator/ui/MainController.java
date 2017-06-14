@@ -1,6 +1,5 @@
 package uk.co.ruben9922.rpncalculator.ui;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -33,7 +32,7 @@ public class MainController {
         }
     }
 
-    public void clearButtonAction(ActionEvent actionEvent) {
+    public void clearButtonAction() {
         rpnExpressionTextField.setText("");
         resultTextField.setText("");
         messageLabel.setText("");
