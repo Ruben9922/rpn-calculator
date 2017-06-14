@@ -10,4 +10,12 @@ public class OperandNode implements Node {
     public int evaluate() {
         return operand;
     }
+
+    public String toInfixString() {
+        return Integer.toString(operand);
+    }
+
+    public String toPrefixString() {
+        return Integer.toString(operand);
+    }
 }

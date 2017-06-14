@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import uk.co.ruben9922.rpncalculator.evaluator.Evaluator;
+import uk.co.ruben9922.rpncalculator.evaluator.Node;
 import uk.co.ruben9922.rpncalculator.evaluator.ParseException;
 
 public class MainController {
@@ -12,14 +13,27 @@ public class MainController {
     @FXML
     private TextField resultTextField;
     @FXML
+    private TextField infixExpressionTextField;
+    @FXML
+    private TextField prefixExpressionTextField;
+    @FXML
     private Label messageLabel;
 
     public void evaluateButtonAction() {
         String rpnExpression = rpnExpressionTextField.getText();
         try {
-            // Evaluate RPN expression and display result in result text field
-            int result = Evaluator.parse(rpnExpression).evaluate();
+            // Produce parse tree from RPN expression
+            Node parseTree = Evaluator.parse(rpnExpression);
+
+            // Evaluate parse tree and display result in result text field
+            int result = parseTree.evaluate();
             resultTextField.setText(Integer.toString(result));
+
+            // Produce infix and prefix expression strings from parse tree, equivalent to original RPN expression
+            String infixString = parseTree.toInfixString();
+            infixExpressionTextField.setText(infixString);
+            String prefixString = parseTree.toPrefixString();
+            prefixExpressionTextField.setText(prefixString);
 
             // Display success message in message label
             messageLabel.setText("Evaluated successfully");
