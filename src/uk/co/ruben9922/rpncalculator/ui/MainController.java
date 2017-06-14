@@ -11,11 +11,11 @@ public class MainController {
     @FXML
     private TextField rpnExpressionTextField;
     @FXML
-    private TextField resultTextField;
-    @FXML
     private TextField infixExpressionTextField;
     @FXML
     private TextField prefixExpressionTextField;
+    @FXML
+    private TextField resultTextField;
     @FXML
     private Label messageLabel;
 
@@ -25,15 +25,15 @@ public class MainController {
             // Produce parse tree from RPN expression
             Node parseTree = Evaluator.parse(rpnExpression);
 
-            // Evaluate parse tree and display result in result text field
-            int result = parseTree.evaluate();
-            resultTextField.setText(Integer.toString(result));
-
             // Produce infix and prefix expression strings from parse tree, equivalent to original RPN expression
             String infixString = parseTree.toInfixString();
             infixExpressionTextField.setText(infixString);
             String prefixString = parseTree.toPrefixString();
             prefixExpressionTextField.setText(prefixString);
+
+            // Evaluate parse tree and display result
+            int result = parseTree.evaluate();
+            resultTextField.setText(Integer.toString(result));
 
             // Display success message in message label
             messageLabel.setText("Evaluated successfully");
@@ -48,6 +48,8 @@ public class MainController {
 
     public void clearButtonAction() {
         rpnExpressionTextField.setText("");
+        infixExpressionTextField.setText("");
+        prefixExpressionTextField.setText("");
         resultTextField.setText("");
         messageLabel.setText("");
     }
