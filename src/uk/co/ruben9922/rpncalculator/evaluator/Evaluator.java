@@ -6,17 +6,16 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.function.IntBinaryOperator;
 
 public class Evaluator {
     @NotNull
     public static Node parse(String rpnExpression) throws ParseException {
         // Create operators
-        Map<String, IntBinaryOperator> operators = new HashMap<>(4);
-        operators.put("+", (x, y) -> x + y);
-        operators.put("*", (x, y) -> x * y);
-        operators.put("-", (x, y) -> x - y);
-        operators.put("/", (x, y) -> (int) Math.round((double) x / y));
+        Map<String, Operator> operators = new HashMap<>(4);
+        operators.put("+", new Operator("+", (x, y) -> x + y));
+        operators.put("*", new Operator("*", (x, y) -> x * y));
+        operators.put("-", new Operator("-", (x, y) -> x - y));
+        operators.put("/", new Operator("/", (x, y) -> (int) Math.round((double) x / y)));
 
         // Create stack of trees
         Deque<Node> stack = new LinkedList<>();
@@ -25,7 +24,7 @@ public class Evaluator {
         String[] lexemes = rpnExpression.split("\\s+");
 
         for (String lexeme : lexemes) {
-            IntBinaryOperator operator = operators.get(lexeme);
+            Operator operator = operators.get(lexeme);
             if (operator == null) {
                 // Lexeme is not an operator, so it should be an integer operand
                 // Try to parse as integer, create new node wrapping this integer, then push to stack
