@@ -23,12 +23,12 @@
     </rowConstraints>
     <Label text="RPN expression"/>
     <TextField GridPane.columnIndex="1" promptText="5 4 3 2 1 + * - /" fx:id="rpnExpressionTextField"/>
-    <Label GridPane.rowIndex="1" text="Result"/>
-    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" editable="false" promptText="-1" fx:id="resultTextField"/>
-    <Label GridPane.rowIndex="2" text="Infix expression"/>
-    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" editable="false" promptText="(5 / (4 - (3 * (2 + 1))))" fx:id="infixExpressionTextField"/>
-    <Label GridPane.rowIndex="3" text="Postfix expression"/>
-    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" editable="false" promptText="/ 5 - 4 * 3 + 2 1" fx:id="prefixExpressionTextField"/>
+    <Label GridPane.rowIndex="1" text="Infix expression"/>
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" editable="false" promptText="(5 / (4 - (3 * (2 + 1))))" fx:id="infixExpressionTextField"/>
+    <Label GridPane.rowIndex="2" text="Postfix expression"/>
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" editable="false" promptText="/ 5 - 4 * 3 + 2 1" fx:id="prefixExpressionTextField"/>
+    <Label GridPane.rowIndex="3" text="Result"/>
+    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" editable="false" promptText="-1" fx:id="resultTextField"/>
     <Label GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" textAlignment="CENTER" fx:id="messageLabel"/>
     <ButtonBar GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
         <buttons>
